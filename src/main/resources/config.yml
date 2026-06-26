@@ -1,0 +1,6 @@
+blockedSpectatorCommands:
+  - msg
+  - w
+  - me
+  - tell
+worldSize: 300

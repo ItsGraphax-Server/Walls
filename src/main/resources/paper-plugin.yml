@@ -1,0 +1,9 @@
+name: Walls
+version: '${version}'
+
+main: de.itsgraphax.walls.WallsPlugin
+api-version: '26.2'
+load: POSTWORLD
+
+authors: [ ItsGraphax ]
+website: https://itsgraphax.de
