@@ -9,6 +9,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public interface PhaseDefinition extends Listener {
+    /**
+     * Checks if the current phase is the correct one
+     */
+    boolean isPhase();
+
     default void tick() {
     }
 
@@ -18,7 +23,7 @@ public interface PhaseDefinition extends Listener {
 
     @EventHandler
     default void onJoin(PlayerJoinEvent e) {
-        setGamemode(e.getPlayer());
+        if (isPhase()) setGamemode(e.getPlayer());
     }
 
     default void onEnd() {
@@ -29,6 +34,5 @@ public interface PhaseDefinition extends Listener {
         else p.setGameMode(elseTeam);
     }
 
-    default void setGamemode(Player p) {
-    }
+    void setGamemode(Player p);
 }

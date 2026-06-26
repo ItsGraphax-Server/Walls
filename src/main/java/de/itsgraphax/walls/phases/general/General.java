@@ -8,6 +8,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.GameMode;
 import org.bukkit.GameRules;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -15,6 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 public class General implements PhaseDefinition, HasPlugin {
+    @Override
+    public boolean isPhase() {
+        return false;
+    }
+
     @Override
     public void onStart() {
         Phase currentPhase = plugin.getPhase();
@@ -52,6 +58,11 @@ public class General implements PhaseDefinition, HasPlugin {
         else {
             GeneralMethods.buildWall(Material.AIR);
         }
+    }
+
+    @Override
+    public void setGamemode(Player p) {
+
     }
 
     @EventHandler

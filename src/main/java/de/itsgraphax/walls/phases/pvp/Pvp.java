@@ -7,6 +7,7 @@ import de.itsgraphax.walls.phases.PhaseDefinition;
 import org.bukkit.GameMode;
 import org.bukkit.GameRules;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -18,6 +19,11 @@ public class Pvp implements PhaseDefinition, HasPlugin {
     @Override
     public void setGamemode(Player p) {
         setGamemodeIfTeam(p, GameMode.SURVIVAL, GameMode.SPECTATOR);
+    }
+
+    @Override
+    public boolean isPhase() {
+        return plugin.getPhase() == Phase.PVP;
     }
 
     @Override
@@ -33,13 +39,15 @@ public class Pvp implements PhaseDefinition, HasPlugin {
 
     @EventHandler
     void onPlayerDeath(PlayerDeathEvent e) {
-        if (plugin.getPhase() != Phase.PVP) return;
+        if (!isPhase()) return;
 
         Location deathLoc = e.getPlayer().getLocation().clone();
         plugin.getServer().getScheduler().runTaskLater(plugin, _ ->
-                e.getPlayer().teleport(deathLoc, PlayerTeleportEvent.TeleportCause.PLUGIN), 1);
+                e.getPlayer().teleport(deathLoc, PlayerTeleportEvent.TeleportCause.PLUGIN), 10);
         e.getPlayer().setGameMode(GameMode.SPECTATOR);
 
-        // TODO: Play wither death sound
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
+        }
     }
 }
