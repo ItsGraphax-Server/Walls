@@ -10,8 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.Set;
 
@@ -38,12 +37,11 @@ public class Pvp implements PhaseDefinition, HasPlugin {
     }
 
     @EventHandler
-    void onPlayerDeath(PlayerDeathEvent e) {
+    void onPlayerDeath(PlayerRespawnEvent e) {
         if (!isPhase()) return;
 
         Location deathLoc = e.getPlayer().getLocation().clone();
-        plugin.getServer().getScheduler().runTaskLater(plugin, _ ->
-                e.getPlayer().teleport(deathLoc, PlayerTeleportEvent.TeleportCause.PLUGIN), 10);
+        e.setRespawnLocation(deathLoc);
         e.getPlayer().setGameMode(GameMode.SPECTATOR);
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
