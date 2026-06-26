@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 import org.joml.Vector2d;
 
@@ -46,8 +47,9 @@ public class GeneralMethods {
     public static void buildWall(Material type) {
         WallsPlugin plugin = WallsPlugin.instance();
 
-        buildWall(true, plugin, type);
-        buildWall(false, plugin, type);
+        BukkitScheduler s = plugin.getServer().getScheduler();
+        s.runTaskLater(plugin, _ -> buildWall(true, plugin, type), 1);
+        s.runTaskLater(plugin, _ -> buildWall(false, plugin, type), 2);
     }
 
     public static Vector2d getTeamLocMult(int teamI) {
@@ -94,7 +96,22 @@ public class GeneralMethods {
     }
 
     public static boolean isInTeamArea(Location l, Player p) {
-        if (l.getWorld() != WallsPlugin.instance().getServer().getRespawnWorld()) return true; // it is always true in the non-respawnworld
+        if (l.getWorld() != WallsPlugin.instance().getServer().getRespawnWorld())
+            return true; // it is always true in the non-respawnworld
         return isInTeamArea(LocationUtils.locationToVector(p.getLocation()), p);
+    }
+
+    public static Location getHighestValidSpawnpoint(Location l) {
+        int airabove = 0;
+        for (int y = 319; y > -63; y--) {
+            Location orr = l.clone();
+            orr.setY(y);
+
+            if (orr.getBlock().isSolid() && airabove >= 2) return orr;
+            if (!orr.getBlock().isCollidable()) airabove += 1;
+
+            else airabove = 0;
+        }
+        return l;
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.joml.Vector2d;
 
@@ -45,10 +46,22 @@ public class GearUp implements PhaseDefinition, HasPlugin {
         if (!GeneralMethods.isInTeamArea(e.getTo(), e.getPlayer())) {
             Integer team = PdcData.team(e.getPlayer());
             assert team != null;
-            Vector2d teamMult = GeneralMethods.getTeamLocMult(team);
-            e.getPlayer().teleport(new Location(e.getFrom().getWorld(), 100 * teamMult.x(), 90, 100 * teamMult.y()),
-                    PlayerTeleportEvent.TeleportCause.PLUGIN);
 
+            Vector2d teamMult = GeneralMethods.getTeamLocMult(team);
+            int halfWorldSize = plugin.getConfig().getInt("worldSize", 400) / 2;
+
+            Location tpLoc = new Location(e.getFrom().getWorld(), halfWorldSize * teamMult.x(), 90, halfWorldSize * teamMult.y());
+            tpLoc = GeneralMethods.getHighestValidSpawnpoint(tpLoc).add(0, 1, 0);
+            e.getPlayer().teleport(tpLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
+    }
+
+    @EventHandler
+    void onPlayerRespawn(PlayerRespawnEvent e) {
+        if (!isPhase()) return;
+
+        if (e.isBedSpawn()) return;
+
+        e.setRespawnLocation(GeneralMethods.getHighestValidSpawnpoint(e.getRespawnLocation()).add(0, 1, 0));
     }
 }
