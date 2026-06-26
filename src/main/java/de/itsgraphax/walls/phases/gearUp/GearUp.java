@@ -23,6 +23,11 @@ public class GearUp implements PhaseDefinition, HasPlugin {
     }
 
     @Override
+    public boolean isPhase() {
+        return plugin.getPhase() == Phase.GEARUP;
+    }
+
+    @Override
     public void onStart() {
         GeneralMethods.setGamerules(Set.of(
 
@@ -35,7 +40,7 @@ public class GearUp implements PhaseDefinition, HasPlugin {
 
     @EventHandler
     void onPlayerMove(PlayerMoveEvent e) {
-        if (plugin.getPhase() != Phase.GEARUP) return;
+        if (!isPhase()) return;
 
         if (!GeneralMethods.isInTeamArea(e.getTo(), e.getPlayer())) {
             Integer team = PdcData.team(e.getPlayer());
