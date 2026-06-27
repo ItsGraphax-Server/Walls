@@ -2,6 +2,7 @@ name: Walls
 version: '${version}'
 
 main: de.itsgraphax.walls.WallsPlugin
+bootstrapper: de.itsgraphax.walls.WallsPluginBootstrap
 api-version: '26.2'
 load: POSTWORLD
 
