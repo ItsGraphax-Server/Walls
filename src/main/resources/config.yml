@@ -4,3 +4,16 @@ blockedSpectatorCommands:
   - me
   - tell
 worldSize: 300
+blocklist:
+  - MACE
+  - WOODEN_SPEAR
+  - STONE_SPEAR
+  - COPPER_SPEAR
+  - IRON_SPEAR
+  - DIAMOND_SPEAR
+  - NETHERITE_SPEAR
+  - TRIDENT
+
+strings:
+  blocklist:
+    craftNotAllowed: "<red>You are not allowed to craft this item!"
