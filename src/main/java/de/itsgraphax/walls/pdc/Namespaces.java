@@ -15,4 +15,7 @@ public final class Namespaces extends NamespacesBase {
     public NamespacedKey lastJoinedPhase() {
         return key("lastJoinedPhase");
     }
+    public NamespacedKey enderPearlThrownTime() {
+        return key("enderPearlThrownTime");
+    }
 }
