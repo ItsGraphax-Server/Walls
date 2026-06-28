@@ -52,7 +52,8 @@ public final class WallsPlugin extends JavaPlugin {
         setPhase(data.getPhase());
 
         OnEnable.registerEvents(Set.of(
-                general, notReady, ready, gearUp, pvp, finished, eventOver
+                general, notReady, ready, gearUp, pvp, finished, eventOver,
+                new Blocklist()
         ), this);
         OnEnable.registerCommands(Set.of(
                 SetPhaseBrigadier::register,
