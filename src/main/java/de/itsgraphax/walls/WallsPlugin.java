@@ -5,6 +5,7 @@ import de.itsgraphax.grphxLib.utils.RichText;
 import de.itsgraphax.walls.commands.DebugBrigadier;
 import de.itsgraphax.walls.commands.SetPhaseBrigadier;
 import de.itsgraphax.walls.commands.SetTeamBrigadier;
+import de.itsgraphax.walls.misc.blocklist.Blocklist;
 import de.itsgraphax.walls.pdc.Namespaces;
 import de.itsgraphax.walls.pdc.PdcData;
 import de.itsgraphax.walls.phases.Phase;
@@ -54,7 +55,8 @@ public final class WallsPlugin extends JavaPlugin {
         setPhase(data.getPhase());
 
         OnEnable.registerEvents(Set.of(
-                general, notReady, ready, gearUp, pvp, finished, eventOver
+                general, notReady, ready, gearUp, pvp, finished, eventOver,
+                new Blocklist()
         ), this);
         OnEnable.registerCommands(Set.of(
                 SetPhaseBrigadier::register,
