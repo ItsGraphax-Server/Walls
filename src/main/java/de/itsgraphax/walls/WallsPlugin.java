@@ -3,6 +3,8 @@ package de.itsgraphax.walls;
 import de.itsgraphax.grphxLib.shorthands.OnEnable;
 import de.itsgraphax.grphxLib.utils.RichText;
 import de.itsgraphax.walls.commands.*;
+import de.itsgraphax.walls.misc.Enderpearls;
+import de.itsgraphax.walls.misc.blocklist.Blocklist;
 import de.itsgraphax.walls.pdc.Namespaces;
 import de.itsgraphax.walls.pdc.PdcData;
 import de.itsgraphax.walls.phases.Phase;
@@ -13,6 +15,7 @@ import de.itsgraphax.walls.phases.general.General;
 import de.itsgraphax.walls.phases.notReady.NotReady;
 import de.itsgraphax.walls.phases.pvp.Pvp;
 import de.itsgraphax.walls.phases.ready.Ready;
+import de.itsgraphax.walls.teams.TeamsManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +37,8 @@ public final class WallsPlugin extends JavaPlugin {
     private Finished finished;
     private EventOver eventOver;
 
+    private TeamsManager teamsManager;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -49,10 +54,13 @@ public final class WallsPlugin extends JavaPlugin {
         finished    = new Finished();
         eventOver   = new EventOver();
 
+        teamsManager = new TeamsManager();
+
         setPhase(data.getPhase());
 
         OnEnable.registerEvents(Set.of(
                 general, notReady, ready, gearUp, pvp, finished, eventOver,
+                teamsManager,
                 new Enderpearls(),
                 new Blocklist()
         ), this);
@@ -71,6 +79,9 @@ public final class WallsPlugin extends JavaPlugin {
 
     public Namespaces namespaces() {
         return namespaces;
+    }
+    public WallsData dataManager() {
+        return data;
     }
 
     public RichText.RichConfigText richText() {
@@ -108,5 +119,9 @@ public final class WallsPlugin extends JavaPlugin {
     }
     public EventOver eventOver() {
         return eventOver;
+    }
+
+    public TeamsManager teamsManager() {
+        return teamsManager;
     }
 }

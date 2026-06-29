@@ -2,9 +2,9 @@ package de.itsgraphax.walls.phases.gearUp;
 
 import de.itsgraphax.walls.GeneralMethods;
 import de.itsgraphax.walls.HasPlugin;
-import de.itsgraphax.walls.pdc.PdcData;
 import de.itsgraphax.walls.phases.Phase;
 import de.itsgraphax.walls.phases.PhaseDefinition;
+import de.itsgraphax.walls.teams.Team;
 import org.bukkit.GameMode;
 import org.bukkit.GameRules;
 import org.bukkit.Location;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class GearUp implements PhaseDefinition, HasPlugin {
     @Override
     public void setGamemode(Player p) {
-        setGamemodeIfTeam(p, GameMode.SURVIVAL, GameMode.CREATIVE);
+        setGamemodeIfTeam(p, GameMode.SURVIVAL, GameMode.SPECTATOR);
     }
 
     @Override
@@ -43,10 +43,10 @@ public class GearUp implements PhaseDefinition, HasPlugin {
         if (!isPhase()) return;
 
         if (!GeneralMethods.isInTeamArea(e.getTo(), e.getPlayer())) {
-            Integer team = PdcData.team(e.getPlayer());
+            Team team = plugin.teamsManager().getTeam(e.getPlayer());
             assert team != null;
 
-            Vector2d teamMult = GeneralMethods.getTeamLocMult(team);
+            Vector2d teamMult = GeneralMethods.getTeamLocMult(team.teamId());
             int halfWorldSize = plugin.getConfig().getInt("worldSize", 400) / 2;
 
             Location tpLoc = new Location(e.getFrom().getWorld(), halfWorldSize * teamMult.x(), 90, halfWorldSize * teamMult.y());

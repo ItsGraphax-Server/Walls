@@ -1,8 +1,6 @@
 package de.itsgraphax.walls.commands;
 
-import de.itsgraphax.walls.GeneralMethods;
 import de.itsgraphax.walls.HasPlugin;
-import de.itsgraphax.walls.pdc.PdcData;
 import net.strokkur.commands.Command;
 import net.strokkur.commands.Executes;
 import net.strokkur.commands.arguments.IntArg;
@@ -15,18 +13,18 @@ import org.bukkit.entity.Player;
 public class SetTeam implements HasPlugin {
     @Executes
     void onExec(CommandSender s, Player p, @IntArg(min=0,max=3) int team) {
-        PdcData.team(p, team);
+        plugin.teamsManager().setTeam(p, team);
 
-        p.displayName(rt.parse(String.format("<%s>%s", GeneralMethods.getTeamColorMMString(-1), p.getName())));
+        plugin.getPhase().getDef().setGamemode(p);
 
         s.sendMessage("set the team for the player");
     }
 
     @Executes
     void onExec(CommandSender s, Player p) {
-        PdcData.team(p, null);
+        plugin.teamsManager().rmTeam(p);
 
-        p.displayName(rt.parse(String.format("<%s>%s", GeneralMethods.getTeamColorMMString(-1), p.getName())));
+        plugin.getPhase().getDef().setGamemode(p);
 
         s.sendMessage("removed the team for the player");
     }

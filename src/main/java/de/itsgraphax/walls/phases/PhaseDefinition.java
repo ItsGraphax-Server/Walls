@@ -1,7 +1,6 @@
 package de.itsgraphax.walls.phases;
 
 import de.itsgraphax.walls.WallsPlugin;
-import de.itsgraphax.walls.pdc.PdcData;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +29,7 @@ public interface PhaseDefinition extends Listener {
     }
 
     default void setGamemodeIfTeam(Player p, GameMode ifTeam, GameMode elseTeam) {
-        if (PdcData.team(p) != null) p.setGameMode(ifTeam);
+        if (WallsPlugin.instance().teamsManager().getTeam(p) != null) p.setGameMode(ifTeam);
         else p.setGameMode(elseTeam);
     }
 

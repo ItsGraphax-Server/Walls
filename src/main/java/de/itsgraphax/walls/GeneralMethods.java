@@ -1,7 +1,7 @@
 package de.itsgraphax.walls;
 
 import de.itsgraphax.grphxLib.utils.LocationUtils;
-import de.itsgraphax.walls.pdc.PdcData;
+import de.itsgraphax.walls.teams.Team;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -70,23 +70,13 @@ public class GeneralMethods {
         }
     }
 
-    public static String getTeamColorMMString(int teamI) {
-        return switch (teamI) {
-            case 0 -> "red";
-            case 1 -> "blue";
-            case 2 -> "yellow";
-            case 3 -> "green";
-            default -> "dark_gray";
-        };
-    }
-
     public static boolean isInTeamArea(Vector v, Player p) {
-        Integer team = PdcData.team(p);
+        Team team = WallsPlugin.instance().teamsManager().getTeam(p);
         if (team == null) return true;
 
         int worldSize = getWorldSize(WallsPlugin.instance());
 
-        Vector2d locMult = getTeamLocMult(team);
+        Vector2d locMult = getTeamLocMult(team.teamId());
         Vector multipliedCoords = v.multiply(new Vector(locMult.x(), 1, locMult.y()));
 
         return multipliedCoords.isInAABB(

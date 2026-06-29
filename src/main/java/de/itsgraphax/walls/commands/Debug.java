@@ -1,7 +1,7 @@
 package de.itsgraphax.walls.commands;
 
 import de.itsgraphax.walls.WallsPlugin;
-import de.itsgraphax.walls.pdc.PdcData;
+import de.itsgraphax.walls.teams.Team;
 import net.strokkur.commands.Command;
 import net.strokkur.commands.Executes;
 import net.strokkur.commands.paper.RequiresOP;
@@ -18,7 +18,7 @@ public class Debug {
 
     @Executes("getteam")
     void getTeam(CommandSender s, Player p) {
-        Integer team = PdcData.team(p);
-        s.sendMessage(team != null ? String.valueOf(team) : "none");
+        Team team = WallsPlugin.instance().teamsManager().getTeam(p);
+        s.sendMessage(team != null ? String.valueOf(team.teamId()) : "none");
     }
 }
