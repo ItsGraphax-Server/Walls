@@ -25,8 +25,7 @@ public class General implements PhaseDefinition, HasPlugin {
     public void onStart() {
         Phase currentPhase = plugin.getPhase();
 
-        // (Not) ingame
-        if (Set.of(Phase.NOTREADY,
+        if (Set.of(Phase.NOTREADY, // not ingame
                 Phase.READY,
                 Phase.FINISHED,
                 Phase.EVENTOVER).contains(currentPhase)) {
@@ -40,14 +39,14 @@ public class General implements PhaseDefinition, HasPlugin {
                     GameRules.PVP
             ));
         }
-        else {
+        else { // ingame
             GeneralMethods.setGamerules(Set.of(
                     GameRules.ADVANCE_TIME,
                     GameRules.ADVANCE_WEATHER,
                     GameRules.SPAWN_MOBS,
                     GameRules.PVP
             ), Set.of(
-
+                    GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS
             ));
         }
 

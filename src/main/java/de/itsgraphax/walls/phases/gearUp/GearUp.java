@@ -33,7 +33,6 @@ public class GearUp implements PhaseDefinition, HasPlugin {
         GeneralMethods.setGamerules(Set.of(
 
         ), Set.of(
-                GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS,
                 GameRules.LOCATOR_BAR,
                 GameRules.IMMEDIATE_RESPAWN
         ));
