@@ -28,7 +28,6 @@ public class Pvp implements PhaseDefinition, HasPlugin {
     @Override
     public void onStart() {
         GeneralMethods.setGamerules(Set.of(
-                GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS,
                 GameRules.LOCATOR_BAR,
                 GameRules.IMMEDIATE_RESPAWN
         ), Set.of(

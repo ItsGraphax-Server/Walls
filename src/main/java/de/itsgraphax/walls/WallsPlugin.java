@@ -53,6 +53,7 @@ public final class WallsPlugin extends JavaPlugin {
 
         OnEnable.registerEvents(Set.of(
                 general, notReady, ready, gearUp, pvp, finished, eventOver,
+                new Enderpearls(),
                 new Blocklist()
         ), this);
         OnEnable.registerCommands(Set.of(
