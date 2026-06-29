@@ -47,5 +47,6 @@ public class Pvp implements PhaseDefinition, HasPlugin {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
         }
+        plugin.teamsManager().rmTeam(e.getPlayer());
     }
 }
