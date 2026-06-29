@@ -9,12 +9,6 @@ public final class Namespaces extends NamespacesBase {
         super(plugin);
     }
 
-    public NamespacedKey team() {
-        return key("team");
-    }
-    public NamespacedKey lastJoinedPhase() {
-        return key("lastJoinedPhase");
-    }
     public NamespacedKey enderPearlThrownTime() {
         return key("enderPearlThrownTime");
     }

@@ -3,6 +3,8 @@ package de.itsgraphax.walls;
 import de.itsgraphax.grphxLib.shorthands.OnEnable;
 import de.itsgraphax.grphxLib.utils.RichText;
 import de.itsgraphax.walls.commands.*;
+import de.itsgraphax.walls.misc.Enderpearls;
+import de.itsgraphax.walls.misc.blocklist.Blocklist;
 import de.itsgraphax.walls.pdc.Namespaces;
 import de.itsgraphax.walls.pdc.PdcData;
 import de.itsgraphax.walls.phases.Phase;
