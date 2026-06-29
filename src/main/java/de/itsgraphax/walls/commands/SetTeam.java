@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 public class SetTeam implements HasPlugin {
     @Executes
     void onExec(CommandSender s, Player p, @IntArg(min=0,max=3) int team) {
-        plugin.teamsManager().rmTeam(p);
         plugin.teamsManager().setTeam(p, team);
 
         plugin.getPhase().getDef().setGamemode(p);

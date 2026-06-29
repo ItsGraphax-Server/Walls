@@ -20,7 +20,7 @@ import java.util.Set;
 public class GearUp implements PhaseDefinition, HasPlugin {
     @Override
     public void setGamemode(Player p) {
-        setGamemodeIfTeam(p, GameMode.SURVIVAL, GameMode.CREATIVE);
+        setGamemodeIfTeam(p, GameMode.SURVIVAL, GameMode.SPECTATOR);
     }
 
     @Override

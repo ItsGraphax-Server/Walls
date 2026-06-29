@@ -19,10 +19,6 @@ public class WallsData extends DataManager {
         return Phase.valueOf(data.getString("phase"));
     }
 
-    public boolean inPhase(Phase phase) {
-        return getPhase() == phase;
-    }
-
     public void setPhase(Phase phase) {
         data.set("phase", phase.name());
         save();
@@ -34,6 +30,7 @@ public class WallsData extends DataManager {
             assert oldTeam != null;
             oldTeam.add(player.getUniqueId().toString());
             data.set(String.format("team.%s", team.teamId()), oldTeam);
+            save();
         } catch (ClassCastException | AssertionError e) {
             plugin.getComponentLogger().error("the data for team {} is incorrect", team.teamId());
         }
@@ -45,6 +42,7 @@ public class WallsData extends DataManager {
             assert oldTeam != null;
             oldTeam.remove(player.getUniqueId().toString());
             data.set(String.format("team.%s", team.teamId()), oldTeam);
+            save();
         } catch (ClassCastException | AssertionError e) {
             plugin.getComponentLogger().error("the data for team {} is incorrect", team.teamId());
         }
@@ -54,7 +52,7 @@ public class WallsData extends DataManager {
     public @Nullable Integer getTeamId(Player player) {
         String uuidString = player.getUniqueId().toString();
         try {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i <= 3; i++) {
                 @SuppressWarnings("unchecked")
                 List<String> teamList = (List<String>) data.getList(String.format("team.%s", i));
                 if (teamList == null) {

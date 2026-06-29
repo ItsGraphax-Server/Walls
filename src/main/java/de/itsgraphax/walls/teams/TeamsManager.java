@@ -3,7 +3,9 @@ package de.itsgraphax.walls.teams;
 import de.itsgraphax.walls.HasPlugin;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,15 +17,20 @@ public class TeamsManager implements Listener, HasPlugin {
     private final List<Team> teams = new ArrayList<>();
 
     public TeamsManager() {
-        for (int i=0; i< 4; i ++) {
+        for (int i = 0; i <= 3; i++) {
             teams.add(
                     new Team(this, i)
             );
         }
     }
 
+    @EventHandler
+    void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().setScoreboard(scoreboard);
+    }
+
     public void setTeam(Player player, int teamId) {
-       setTeam(player, teams.get(teamId));
+        setTeam(player, teams.get(teamId));
     }
 
     public void setTeam(Player player, Team team) {
@@ -31,6 +38,7 @@ public class TeamsManager implements Listener, HasPlugin {
             plugin.getComponentLogger().error("player {} is already in a team!", player.getName());
             return;
         }
+        rmTeam(player);
         plugin.dataManager().setTeam(player, team);
         team.addPlayer(player);
     }
@@ -55,8 +63,8 @@ public class TeamsManager implements Listener, HasPlugin {
         return switch (teamI) {
             case 0 -> NamedTextColor.RED;
             case 1 -> NamedTextColor.BLUE;
-            case 2 -> NamedTextColor.YELLOW;
-            case 3 -> NamedTextColor.GREEN;
+            case 2 -> NamedTextColor.GREEN;
+            case 3 -> NamedTextColor.YELLOW;
             default -> null;
         };
     }
