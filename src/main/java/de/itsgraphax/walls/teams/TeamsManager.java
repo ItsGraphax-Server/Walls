@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamsManager implements Listener, HasPlugin {
-    protected final Scoreboard scoreboard = plugin.getServer().getScoreboardManager().getNewScoreboard();
+    protected final Scoreboard scoreboard = plugin.getServer().getScoreboardManager().getMainScoreboard();
     private final List<Team> teams = new ArrayList<>();
 
     public TeamsManager() {
@@ -27,6 +27,15 @@ public class TeamsManager implements Listener, HasPlugin {
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().setScoreboard(scoreboard);
+        Team team = getTeam(event.getPlayer());
+        if (team == null) return;
+        event.getPlayer().displayName(
+                rt.parse(String.format(
+                        "<%s>%s",
+                        team.teamColor().toString().toLowerCase(),
+                        event.getPlayer().getName()
+                ))
+        );
     }
 
     public void setTeam(Player player, int teamId) {
@@ -41,6 +50,14 @@ public class TeamsManager implements Listener, HasPlugin {
         rmTeam(player);
         plugin.dataManager().setTeam(player, team);
         team.addPlayer(player);
+
+        player.displayName(
+                rt.parse(String.format(
+                        "<%s>%s",
+                        team.teamColor().toString().toLowerCase(),
+                        player.getName()
+                ))
+        );
     }
 
     public void rmTeam(Player player) {
