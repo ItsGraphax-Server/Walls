@@ -1,6 +1,7 @@
 package de.itsgraphax.walls.commands;
 
 import de.itsgraphax.walls.WallsPlugin;
+import de.itsgraphax.walls.misc.reactorCore.NetherReactorCore;
 import de.itsgraphax.walls.teams.Team;
 import net.strokkur.commands.Command;
 import net.strokkur.commands.Executes;
@@ -20,5 +21,10 @@ public class Debug {
     void getTeam(CommandSender s, Player p) {
         Team team = WallsPlugin.instance().teamsManager().getTeam(p);
         s.sendMessage(team != null ? String.valueOf(team.teamId()) : "none");
+    }
+
+    @Executes("giveNetherReactorCore")
+    void giveNetherReactorCore(CommandSender s, Player p) {
+        p.give(NetherReactorCore.getItemStack());
     }
 }

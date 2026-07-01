@@ -5,6 +5,7 @@ import de.itsgraphax.grphxLib.utils.RichText;
 import de.itsgraphax.walls.commands.*;
 import de.itsgraphax.walls.misc.Enderpearls;
 import de.itsgraphax.walls.misc.blocklist.Blocklist;
+import de.itsgraphax.walls.misc.reactorCore.NetherReactorCore;
 import de.itsgraphax.walls.pdc.Namespaces;
 import de.itsgraphax.walls.pdc.PdcData;
 import de.itsgraphax.walls.phases.Phase;
@@ -62,7 +63,8 @@ public final class WallsPlugin extends JavaPlugin {
                 general, notReady, ready, gearUp, pvp, finished, eventOver,
                 teamsManager,
                 new Enderpearls(),
-                new Blocklist()
+                new Blocklist(),
+                new NetherReactorCore()
         ), this);
         OnEnable.registerCommands(Set.of(
                 SetPhaseBrigadier::register,
@@ -71,6 +73,8 @@ public final class WallsPlugin extends JavaPlugin {
                 DebugBrigadier::register
         ), this);
         getServer().getScheduler().runTaskTimer(this, PhaseCountdown::tick, 1, 1 );
+
+        NetherReactorCore.registerRecipe();
     }
 
     public static WallsPlugin instance() {
