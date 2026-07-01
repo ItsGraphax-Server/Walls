@@ -12,4 +12,12 @@ public final class Namespaces extends NamespacesBase {
     public NamespacedKey enderPearlThrownTime() {
         return key("enderPearlThrownTime");
     }
+
+    public NamespacedKey reactorCoreStructure(int id) {
+        return key(String.format("reactorcore/%s", id));
+    }
+
+    public NamespacedKey reactorCore() {
+        return key("reactorCore");
+    }
 }
