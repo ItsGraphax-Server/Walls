@@ -2,13 +2,12 @@ package de.itsgraphax.walls.misc.reactorCore;
 
 import de.itsgraphax.walls.HasPlugin;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -22,6 +21,7 @@ import java.util.random.RandomGenerator;
 @SuppressWarnings("UnstableApiUsage")
 public class NetherReactorCore implements Listener, HasPlugin {
     private static final ItemStack itemStack;
+    private static final Random random = new Random();
 
     public NetherReactorCore() {}
 
@@ -40,7 +40,11 @@ public class NetherReactorCore implements Listener, HasPlugin {
     }
 
     private void placeStructure(Location location) {
-        Structure structure = plugin.getServer().getStructureManager().getStructure(plugin.namespaces().reactorCoreStructure(0));
+        int structureId = random.nextInt(1, 9);
+
+        location.getBlock().setType(Material.AIR);
+
+        Structure structure = plugin.getServer().getStructureManager().getStructure(plugin.namespaces().reactorCoreStructure(structureId));
         if (structure == null) {
             plugin.getComponentLogger().error("structure not found, is the datapack loaded?");
             return;
@@ -49,26 +53,41 @@ public class NetherReactorCore implements Listener, HasPlugin {
     }
 
     @EventHandler
-    void onBlockPlace(BlockPlaceEvent event) {
-        if (!event.getItemInHand().equals(itemStack)) return;
-        plugin.getServer().getRespawnWorld().spawnParticle(Particle.OMINOUS_SPAWNING, event.getBlock().getLocation().toCenterLocation(), 255, 3, 1 ,3);
-        plugin.getServer().getRespawnWorld().spawnParticle(Particle.PORTAL, event.getBlock().getLocation().toCenterLocation(), 1000, 3, 1,3);
+    void onBlockPlace(BlockPlaceEvent e) {
+        if (!e.getItemInHand().equals(itemStack)) return;
 
+        Location location = e.getBlock().getLocation().toCenterLocation();
+        World world = location.getWorld();
+
+        if (Math.abs(location.x()) < 10 || Math.abs(location.z()) < 10) {
+            e.setCancelled(true);
+            return;
+        }
+
+        world.spawnParticle(Particle.OMINOUS_SPAWNING, location, 255, 3, 1, 3);
+        world.spawnParticle(Particle.PORTAL, location, 1000, 3, 1, 3);
+
+        world.playSound(location, Sound.ENTITY_ALLAY_AMBIENT_WITHOUT_ITEM, 1, 1);
 
         plugin.getServer().getScheduler().runTaskLater(
                 plugin,
-                _ -> placeStructure(event.getBlock().getLocation().subtract(3, 5, 3)),
+                _ -> placeStructure(e.getBlock().getLocation().subtract(3, 4, 3)),
                 50
         );
+        plugin.getComponentLogger().info("nether reactor core placed by {} generated a structure.", e.getPlayer().name());
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    void onPlayerJoin(PlayerJoinEvent event) {
         if (!event.getPlayer().hasDiscoveredRecipe(plugin.namespaces().reactorCore())) {
             event.getPlayer().discoverRecipe(plugin.namespaces().reactorCore());
         }
     }
 
+    @EventHandler
+    void onBlockGrow(BlockGrowEvent e) {
+        if (e.getBlock().getType() == Material.NETHER_WART) e.setCancelled(true);
+    }
 
 
     static {
@@ -77,6 +96,8 @@ public class NetherReactorCore implements Listener, HasPlugin {
         itemStack.setData(DataComponentTypes.ITEM_MODEL, Material.LIGHT.getKey());
         itemStack.setData(DataComponentTypes.MAX_STACK_SIZE, 1);
 
-        plugin.getServer().getStructureManager().loadStructure(plugin.namespaces().reactorCoreStructure(0));
+        for (int i = 0; i <= 8; i++) {
+            plugin.getServer().getStructureManager().loadStructure(plugin.namespaces().reactorCoreStructure(i));
+        }
     }
 }
